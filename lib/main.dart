@@ -10,6 +10,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
   final String title;
 
   @override
@@ -134,6 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+/*
   final EventChannel _channel =
       const EventChannel('samples.flutter.dev/battery');
   Stream<int> _onVolumeChanged;
@@ -146,6 +149,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
     return _onVolumeChanged;
   }
+*/
 //Streamは保持する。
 //新たにStreamを生成すると以前
 //生成したStreamはCancelされる。
