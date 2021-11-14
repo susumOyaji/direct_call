@@ -214,7 +214,11 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: _getPiatformHagup,
             ),
             Text(_platformHangup),
-
+            RaisedButton(
+              child: Text('Direct_Call'),
+              onPressed: _dialpad,
+            ),
+            Text(_platformHangup),
             //Center(child: Text('Running on Version: $_platformVersion\n')),
             //Center(child: Text('Running on Battery: $_platformBattery\n')),
             //Center(child: Text('Running on Telephony: $_platformTelephony\n')),
