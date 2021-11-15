@@ -185,46 +185,55 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            //RaisedButton(
-            //  child: Text('Get Battery Level'),
-            //  onPressed: //_getBatteryLevel,
-            //),
-            Text(_platformBattery),
+      body: SafeArea(
+          child: Column(
+        children: [
+          DialPad(
+              enableDtmf: true,
+              outputMask: "(000) 000-0000",
+              backspaceButtonIconColor: Colors.red,
+              makeCall: (number) {
+                print(number);
+              }),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                //RaisedButton(
+                //  child: Text('Get Battery Level'),
+                //  onPressed: //_getBatteryLevel,
+                //),
+                Text(_platformBattery),
 
-            Text(_platformVersion),
-            RaisedButton(
-              child: Text(_platformTelephony_state),
-              onPressed: _getAndroidphone,
+                Text(_platformVersion),
+                RaisedButton(
+                  child: Text(_platformTelephony_state),
+                  onPressed: _getAndroidphone,
+                ),
+                //Text(_platformTelephony),
+                RaisedButton(
+                  child: Text('Answer the pnone'),
+                  onPressed: _getPiatformAnswer,
+                ),
+                Text(_platformAnswer),
+                RaisedButton(
+                  child: Text('HangUp to Redial the pnone'),
+                  onPressed: _getPiatformHagup,
+                ),
+                Text(_platformHangup),
+
+                //Center(child: Text('Running on Version: $_platformVersion\n')),
+                //Center(child: Text('Running on Battery: $_platformBattery\n')),
+                //Center(child: Text('Running on Telephony: $_platformTelephony\n')),
+              ],
             ),
-            //Text(_platformTelephony),
-            RaisedButton(
-              child: Text('Answer the pnone'),
-              onPressed: _getPiatformAnswer,
-            ),
-            Text(_platformAnswer),
-            RaisedButton(
-              child: Text('HangUp to Redial the pnone'),
-              onPressed: _getPiatformHagup,
-            ),
-            Text(_platformHangup),
-            RaisedButton(
-              child: Text('Direct_Call'),
-              onPressed: _dialpad,
-            ),
-            Text(_platformHangup),
-            //Center(child: Text('Running on Version: $_platformVersion\n')),
-            //Center(child: Text('Running on Battery: $_platformBattery\n')),
-            //Center(child: Text('Running on Telephony: $_platformTelephony\n')),
-          ],
-        ),
-      ),
+          ),
+        ],
+      )),
     );
   }
 }
