@@ -261,8 +261,7 @@ public class DialerActivity extends FlutterActivity {
           //val intent:Intent = Intent(this,SampleService().javaClass)
           //startService(intent);
         
-        
-        
+       
         // Create the Uri from phoneNumberInput
           //Uri uri = Uri.parse("tel:"+ _phone);
             

@@ -186,11 +186,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      //appBar: AppBar(
+      //  title: Text(widget.title),
+      //),
       body: SafeArea(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           DialPad(
               enableDtmf: true,
@@ -201,7 +202,7 @@ class _MyHomePageState extends State<MyHomePage> {
               }),
           Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 //RaisedButton(
                 //  child: Text('Get Battery Level'),
