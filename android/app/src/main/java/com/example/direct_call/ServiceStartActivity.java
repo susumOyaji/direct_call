@@ -11,11 +11,15 @@ import android.widget.Button;
 import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.widget.Toast;
+import android.widget.TextView;
+import android.net.Uri;
 
 public class ServiceStartActivity extends Activity implements OnClickListener{
+    private Button mStartServiceButton = null;
+	String phonestate;
+    TextView callinfo;
 
-	private Button mStartServiceButton = null;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -63,6 +67,10 @@ public class ServiceStartActivity extends Activity implements OnClickListener{
 		// ServiceをIntentで起動する
 		Intent intent = new Intent(ServiceStartActivity.this, MakeCallService.class);
 		startService(intent);
+        
+        //暗黙的インテント
+        //Intent intent = new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:0123456789"));
+        //startActivity(intent);
 	}
 	
 }
