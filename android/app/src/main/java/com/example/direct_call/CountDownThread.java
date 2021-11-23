@@ -22,7 +22,7 @@ public class CountDownThread extends Thread {
 	public void run() {
 		 //暗黙的インテント
         Intent intent = new Intent(Intent.ACTION_DIAL).setData(Uri.parse("tel:0123456789"));
-        startActivity(intent);
+        //startActivity(intent);
 
 		try {
 			for (int count = MAX_COUNT; count >= 0; count--) {
@@ -34,7 +34,7 @@ public class CountDownThread extends Thread {
 		}
 
 		// ServiceをIntentで停止する
-		Intent intent = new Intent(mContext, CountDownService.class);
+		/*Intent*/ intent = new Intent(mContext, CountDownService.class);
 		mContext.stopService(intent);
 	}
 
