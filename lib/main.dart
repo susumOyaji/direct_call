@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+//商品ID　m59704576093
+
 void main() => runApp(
       MaterialApp(
         home: MyApp(),
