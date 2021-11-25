@@ -38,7 +38,7 @@
             </intent-filter>
         </activity>
         <!-- Serviceは　"service"タグを利用してマニフェストファイルに登録する -->
-        <service android:name=".MakeCallService" />
+        <!-- <service android:name=".MakeCallService" /> -->
         
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
