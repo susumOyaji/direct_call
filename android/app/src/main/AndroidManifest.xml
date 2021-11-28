@@ -36,6 +36,11 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+            <!-- If your app makes calls -->
+            <intent-filter>
+              <action android:name="android.intent.action.DIAL" />
+              <data android:scheme="tel" />
+            </intent-filter>
         </activity>
         <!-- Serviceは　"service"タグを利用してマニフェストファイルに登録する -->
         <!-- <service android:name=".MakeCallService" /> -->

@@ -44,7 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     // Check for phone call support.
-    canLaunch('tel:123').then((bool result) {
+    // 指定された URL が、デバイスにインストールされているアプリによって処理できるかどうかを確認します。
+    canLaunch("tel:01817658822").then((bool result) {
       setState(() {
         _hasCallSupport = result;
       });
