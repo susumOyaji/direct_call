@@ -1,28 +1,26 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
-// ignore_for_file: public_member_api_docs
-
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:url_launcher/link.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
+
+import 'package:flutter_dialpad/flutter_dialpad.dart';
 
 void main() {
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'URL Launcher',
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'URL Launcher'),
+      home: MyHomePage(title: 'Flutter NativeData Test'),
     );
   }
 }
@@ -36,198 +34,207 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  bool _hasCallSupport = false;
-  Future<void>? _launched;
-  String _phone = '';
+  String _platformVersion = 'Unknown version level.';
+  String _platformTelephony = 'Unknown telephony';
+  String _platformBattery = 'Unknown battery Level';
+  String _platformHangup = 'Unknown Connect';
+  String _platformAnswer = 'Unknown Connect';
+  String _platformTelephony_state = 'Unknown Connect';
+
+  static const platform = const MethodChannel('samples.flutter.dev/battery');
 
   @override
   void initState() {
     super.initState();
-    // Check for phone call support.
-    // 指定された URL が、デバイスにインストールされているアプリによって処理できるかどうかを確認します。
-    canLaunch("tel:01817658822").then((bool result) {
-      setState(() {
-        _hasCallSupport = result;
-      });
+    initPlatformState();
+    _Androidphone_state();
+
+    //_getBatteryLevel();
+    //initPlatformState();
+  }
+
+  // Platform messages are asynchronous, so we initialize in an async method.
+  Future<void> initPlatformState() async {
+    //Future<void> _getBatteryLevel() async {
+    // Get battery level.
+    String batteryLevel;
+    try {
+      final int result = await platform.invokeMethod('getBatteryLevel');
+      batteryLevel = 'Battery level at $result % .';
+    } on PlatformException catch (e) {
+      batteryLevel = "Failed to get battery level: '${e.message}'.";
+    }
+
+    setState(() {
+      _platformBattery = batteryLevel;
+    });
+    //}
+
+    //Future<void> _getPiatformVersion() async {
+    // Get battery level.
+    String platformVersion;
+    try {
+      final String result = await platform.invokeMethod('getPlatformVersion');
+      platformVersion = result;
+    } on PlatformException catch (e) {
+      platformVersion = "Failed to get android version: '${e.message}'.";
+    }
+
+    setState(() {
+      _platformVersion = platformVersion;
+    });
+    //}
+  }
+
+  Future<void> _Androidphone_state() async {
+    // Get battery level.
+    String formTelephony_state;
+
+    try {
+      final String result =
+          await platform.invokeMethod('Androidphone_getState');
+      formTelephony_state = result;
+    } on PlatformException catch (e) {
+      formTelephony_state = "Failed : '${e.message}'.";
+    }
+    setState(() {
+      _platformTelephony_state = formTelephony_state;
     });
   }
 
-  Future<void> _launchInBrowser(String url) async {
-    if (!await launch(
-      url,
-      forceSafariVC: false,
-      forceWebView: false,
-      headers: <String, String>{'my_header_key': 'my_header_value'},
-    )) {
-      throw 'Could not launch $url';
+  Future<void> _getAndroidphone() async {
+    // Get battery level.
+    String platformTelephony;
+
+    try {
+      final String result =
+          await platform.invokeMethod('getAndroidphone', "1345678");
+      platformTelephony = result;
+    } on PlatformException catch (e) {
+      platformTelephony = "Failed : '${e.message}'.";
     }
+
+    setState(() {
+      _platformTelephony = platformTelephony;
+    });
   }
 
-  Future<void> _launchInWebViewOrVC(String url) async {
-    if (!await launch(
-      url,
-      forceSafariVC: true,
-      forceWebView: true,
-      headers: <String, String>{'my_header_key': 'my_header_value'},
-    )) {
-      throw 'Could not launch $url';
+  Future<void> _getPiatformAnswer() async {
+    // Get battery level.
+    String platformAnswer;
+
+    try {
+      final bool result = await platform.invokeMethod('answer', true);
+      platformAnswer = result.toString();
+      print(platformAnswer);
+    } on PlatformException catch (e) {
+      platformAnswer = "Failed : '${e.message}'.";
     }
+
+    setState(() {
+      _platformAnswer = platformAnswer;
+    });
   }
 
-  Future<void> _launchInWebViewWithJavaScript(String url) async {
-    if (!await launch(
-      url,
-      forceSafariVC: true,
-      forceWebView: true,
-      enableJavaScript: true,
-    )) {
-      throw 'Could not launch $url';
+/*
+  final EventChannel _channel =
+      const EventChannel('samples.flutter.dev/battery');
+  Stream<int> _onVolumeChanged;
+
+  Stream<int> get onVolumeChanged {
+    if (_onVolumeChanged == null) {
+      _onVolumeChanged = _channel
+          .receiveBroadcastStream()
+          .map((dynamic event) => event as int);
     }
+    return _onVolumeChanged;
+  }
+*/
+//Streamは保持する。
+//新たにStreamを生成すると以前
+//生成したStreamはCancelされる。
+//シングルトンにするのはStreamを複数生成させないため。
+
+  Future<void> _getPiatformHagup() async {
+    // Get battery level.
+    String platformHangup;
+
+    try {
+      final bool result = await platform.invokeMethod('hangup', true);
+      platformHangup = result.toString();
+      print(platformHangup);
+    } on PlatformException catch (e) {
+      platformHangup = "Failed : '${e.message}'.";
+    }
+
+    setState(() {
+      _platformHangup = platformHangup;
+    });
   }
 
-  Future<void> _launchInWebViewWithDomStorage(String url) async {
-    if (!await launch(
-      url,
-      forceSafariVC: true,
-      forceWebView: true,
-      enableDomStorage: true,
-    )) {
-      throw 'Could not launch $url';
-    }
-  }
-
-  Future<void> _launchUniversalLinkIos(String url) async {
-    final bool nativeAppLaunchSucceeded = await launch(
-      url,
-      forceSafariVC: false,
-      universalLinksOnly: true,
-    );
-    if (!nativeAppLaunchSucceeded) {
-      await launch(
-        url,
-        forceSafariVC: true,
-      );
-    }
-  }
-
-  Widget _launchStatus(BuildContext context, AsyncSnapshot<void> snapshot) {
-    if (snapshot.hasError) {
-      return Text('Error: ${snapshot.error}');
-    } else {
-      return const Text('');
-    }
-  }
-
-  Future<void> _makePhoneCall(String phoneNumber) async {
-    // Use `Uri` to ensure that `phoneNumber` is properly URL-encoded.
-    // Just using 'tel:$phoneNumber' would create invalid URLs in some cases,
-    // such as spaces in the input, which would cause `launch` to fail on some
-    // platforms.
-    final Uri launchUri = Uri(
-      scheme: 'tel',
-      path: phoneNumber,
-    );
-    await launch(launchUri.toString());
+  void _dialpad() {
+    DialPad(
+        enableDtmf: true,
+        outputMask: "(000) 000-0000",
+        backspaceButtonIconColor: Colors.red,
+        makeCall: (number) {
+          print(number);
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    // onPressed calls using this URL are not gated on a 'canLaunch' check
-    // because the assumption is that every device can launch a web URL.
-    const String toLaunch = 'https://www.cylog.org/headers/';
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: ListView(
-        children: <Widget>[
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: TextField(
-                    onChanged: (String text) => _phone = text,
-                    decoration: const InputDecoration(
-                        hintText: 'Input the phone number to launch')),
-              ),
-              ElevatedButton(
-                onPressed: _hasCallSupport
-                    ? () => setState(() {
-                          _launched = _makePhoneCall(_phone);
-                        })
-                    : null,
-                child: _hasCallSupport
-                    ? const Text('Make phone call')
-                    : const Text('Calling not supported'),
-              ),
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: Text(toLaunch),
-              ),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _launched = _launchInBrowser(toLaunch);
-                }),
-                child: const Text('Launch in browser'),
-              ),
-              const Padding(padding: EdgeInsets.all(16.0)),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _launched = _launchInWebViewOrVC(toLaunch);
-                }),
-                child: const Text('Launch in app'),
-              ),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _launched = _launchInWebViewWithJavaScript(toLaunch);
-                }),
-                child: const Text('Launch in app(JavaScript ON)'),
-              ),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _launched = _launchInWebViewWithDomStorage(toLaunch);
-                }),
-                child: const Text('Launch in app(DOM storage ON)'),
-              ),
-              const Padding(padding: EdgeInsets.all(16.0)),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _launched = _launchUniversalLinkIos(toLaunch);
-                }),
-                child: const Text(
-                    'Launch a universal link in a native app, fallback to Safari.(Youtube)'),
-              ),
-              const Padding(padding: EdgeInsets.all(16.0)),
-              ElevatedButton(
-                onPressed: () => setState(() {
-                  _launched = _launchInWebViewOrVC(toLaunch);
-                  Timer(const Duration(seconds: 5), () {
-                    print('Closing WebView after 5 seconds...');
-                    closeWebView();
-                  });
-                }),
-                child: const Text('Launch in app + close after 5 seconds'),
-              ),
-              const Padding(padding: EdgeInsets.all(16.0)),
-              Link(
-                uri: Uri.parse(
-                    'https://pub.dev/documentation/url_launcher/latest/link/link-library.html'),
-                target: LinkTarget.blank,
-                builder: (ctx, openLink) {
-                  return TextButton.icon(
-                    onPressed: openLink,
-                    label: Text('Link Widget documentation'),
-                    icon: Icon(Icons.read_more),
-                  );
-                },
-              ),
-              const Padding(padding: EdgeInsets.all(16.0)),
-              FutureBuilder<void>(future: _launched, builder: _launchStatus),
-            ],
+      backgroundColor: Colors.black,
+      //appBar: AppBar(
+      //  title: Text(widget.title),
+      //),
+      body: SafeArea(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          DialPad(
+              enableDtmf: true,
+              outputMask: "(000) 000-0000",
+              backspaceButtonIconColor: Colors.red,
+              makeCall: (number) {
+                print(number);
+              }),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                //RaisedButton(
+                //  child: Text('Get Battery Level'),
+                //  onPressed: //_getBatteryLevel,
+                //),
+                Text(_platformBattery),
+
+                Text(_platformVersion),
+                RaisedButton(
+                  child: Text(_platformTelephony_state),
+                  onPressed: _getAndroidphone,
+                ),
+                //Text(_platformTelephony),
+                RaisedButton(
+                  child: Text('Answer the pnone'),
+                  onPressed: _getPiatformAnswer,
+                ),
+                Text(_platformAnswer),
+                RaisedButton(
+                  child: Text('HangUp to Redial the pnone'),
+                  onPressed: _getPiatformHagup,
+                ),
+                Text(_platformHangup),
+
+                //Center(child: Text('Running on Version: $_platformVersion\n')),
+                //Center(child: Text('Running on Battery: $_platformBattery\n')),
+                //Center(child: Text('Running on Telephony: $_platformTelephony\n')),
+              ],
+            ),
           ),
         ],
-      ),
+      )),
     );
   }
 }
